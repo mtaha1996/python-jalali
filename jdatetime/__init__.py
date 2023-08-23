@@ -328,6 +328,20 @@ class date:
         return date(y, m, d)
 
     @staticmethod
+    def to_start_of_year():
+        """Start of current jalali year"""
+        to = py_datetime.date.today()
+        (y, _, _) = GregorianToJalali(to.year, to.month, to.day).getJalaliList()
+        return date(y, 1, 1)
+        
+    @staticmethod
+    def to_start_of_month():
+        """Start of current jalali month"""
+        to = py_datetime.date.today()
+        (y, m, _) = GregorianToJalali(to.year, to.month, to.day).getJalaliList()
+        return date(y, m, 1)
+
+    @staticmethod
     def fromtimestamp(timestamp):
         d = py_datetime.date.fromtimestamp(timestamp)
         (y, m, d) = GregorianToJalali(d.year, d.month, d.day).getJalaliList()
@@ -784,6 +798,43 @@ class datetime(date):
     def today():
         """Current date or datetime"""
         return datetime.now()
+    
+    @staticmethod
+    def to_start_of_year(tz=None):
+        """Start of current jalali year"""
+        
+        now_datetime = py_datetime.datetime.now(tz)
+        now = date.fromgregorian(date=now_datetime.date())
+        
+        return datetime(
+            now.year,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            tz,
+        )
+        
+        
+    @staticmethod
+    def to_start_of_month(tz=None):
+        """Start of current jalali month"""
+        
+        now_datetime = py_datetime.datetime.now(tz)
+        now = date.fromgregorian(date=now_datetime.date())
+        
+        return datetime(
+            now.year,
+            now.month,
+            1,
+            0,
+            0,
+            0,
+            0,
+            tz,
+        )
 
     @staticmethod
     def now(tz=None):
